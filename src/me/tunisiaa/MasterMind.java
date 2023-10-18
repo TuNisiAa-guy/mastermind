@@ -4,16 +4,19 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class MasterMind {
-    private int digits;
-    private int tries;
-    private int numberToGuess;
+    private final int digits;
+    private final int tries;
+    private final int numberToGuess;
     public int currentTurn = 1;
+
+    private boolean[] correctNumbers;
 
     public MasterMind(int digits, int tries){
         this.digits = digits;
         this.tries = tries;
         Random r = new Random();
         numberToGuess = (int) Math.pow(10, digits - 1) + r.nextInt(9*(int) Math.pow(10, digits - 1));
+        correctNumbers = new boolean[digits];
     }
 
     private int numbersCorrect(int guess){
@@ -24,7 +27,10 @@ public class MasterMind {
             int digitA = tempGuess % 10;
             int digitB = tempNumberToGuess % 10;
             if(digitA == digitB){
+                this.correctNumbers[i] = true;
                 n++;
+            }else{
+                this.correctNumbers[i] = false;
             }
             tempGuess /= 10;
             tempNumberToGuess /= 10;
@@ -35,9 +41,12 @@ public class MasterMind {
     private int numbersPresent(int guess){
         int n = 0;
         for(int i = 0; i < this.digits; i++){
+            if(this.correctNumbers[i]){
+                continue;
+            }
             for(int j = 0; j < this.digits; j++){
-                int digitA = (guess / (int) Math.pow(10, i)) % 10;
-                int digitB = (this.numberToGuess / (int) Math.pow(10, j)) % 10;
+                int digitA = getDigitAtIndex(guess, j);
+                int digitB = getDigitAtIndex(this.numberToGuess, j);
                 if(digitA == digitB){
                     n++;
                     break;
@@ -45,6 +54,10 @@ public class MasterMind {
             }
         }
         return n;
+    }
+
+    private int getDigitAtIndex(int number, int index){
+        return (number / (int) Math.pow(10, index)) % 10;
     }
 
     public void startGame(){
