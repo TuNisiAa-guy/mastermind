@@ -52,8 +52,8 @@ public class MasterMind {
                 continue;
             }
             for(int j = 0; j < this.digits; j++){ // confronta tutte le cifre
-                int digitA = getDigitAtIndex(guess, j);
-                int digitB = getDigitAtIndex(this.numberToGuess, j);
+                int digitA = getDigitAtIndex(this.numberToGuess, i);
+                int digitB = getDigitAtIndex(guess, j);
                 if(digitA == digitB){
                     n++;
                     break;
