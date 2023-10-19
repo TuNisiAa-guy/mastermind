@@ -11,6 +11,8 @@ public class MasterMind {
 
     private boolean[] correctNumbers;
 
+    private int guess;
+
     public MasterMind(int digits, int tries){ // costruttore con numero di cifre e tentativi come parametri
         this.digits = digits;
         this.tries = tries;
@@ -19,12 +21,12 @@ public class MasterMind {
         correctNumbers = new boolean[digits];
     }
 
-    private int numbersCorrect(int guess){ // conta i numeri nella posizione corretta
+    private int numbersCorrect(){ // conta i numeri nella posizione corretta
         int n = 0;
 //        int tempGuess = guess;
 //        int tempNumberToGuess = this.numberToGuess;
         for(int i = 0; i < this.digits; i++){
-            if(getDigitAtIndex(guess, i) == getDigitAtIndex(this.numberToGuess, i)){
+            if(getDigitAtIndex(this.guess, i) == getDigitAtIndex(this.numberToGuess, i)){
                 this.correctNumbers[i] = true;
                 n++;
             }else{
@@ -45,7 +47,7 @@ public class MasterMind {
         return n;
     }
 
-    private int numbersPresent(int guess){ // conta le cifre che sono in posizioni sbagliate
+    private int numbersPresent(){ // conta le cifre che sono in posizioni sbagliate
         int n = 0;
         for(int i = 0; i < this.digits; i++){ // itera tra tutte le cifre del primo numero
             if(this.correctNumbers[i]){ // evita che si contino più volte le cifre in posizione corretta
@@ -53,7 +55,7 @@ public class MasterMind {
             }
             for(int j = 0; j < this.digits; j++){ // confronta tutte le cifre
                 int digitA = getDigitAtIndex(this.numberToGuess, i);
-                int digitB = getDigitAtIndex(guess, j);
+                int digitB = getDigitAtIndex(this.guess, j);
                 if(digitA == digitB){
                     n++;
                     break;
@@ -68,6 +70,8 @@ public class MasterMind {
     }
 
     public void startGame(){
+        GUI gui = new GUI();
+        gui.main();
         do{
             this.currentTurn++; //incremento del numero del turno attuale
             int guess; // raccoglie la scelta dell'utente
@@ -88,5 +92,9 @@ public class MasterMind {
 
     public int getNumberToGuess(){ //così si può vedere la variabile numberToGuess anche se è privata
         return this.numberToGuess;
+    }
+
+    public void setGuess(int value){
+        this.guess = value;
     }
 }
